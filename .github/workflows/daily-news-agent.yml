@@ -37,6 +37,7 @@ jobs:
       env:
         # Add your secrets here - these should match the secret names in GitHub
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
         EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
         NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
