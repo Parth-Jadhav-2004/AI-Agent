@@ -1,225 +1,103 @@
-# AI News Agent
+# 🤖 AI Daily News Agent
 
-An intelligent daily news agent that scrapes AI-related articles, summarizes them using Google's Gemini API, and sends professional email digests.
+An intelligent automation system that delivers personalized daily news summaries directly to your email inbox. The agent scrapes latest news, uses AI to create concise summaries, and sends them automatically every morning.
 
-## Features
+## ✨ Features
 
-- 🌐 **Web Scraping**: Automatically scrapes AI news from multiple reputable sources
-- 🤖 **AI Summarization**: Uses Google's Gemini API for intelligent article summarization
-- 📧 **Professional Emails**: Sends beautifully formatted HTML email digests
-- ⏰ **Automated Scheduling**: Configurable daily scheduling
-- 🔧 **Highly Configurable**: Easy configuration through YAML files
-- 📊 **Comprehensive Logging**: Detailed logging for monitoring and debugging
+- **🔄 Automated Daily Delivery**: Runs automatically every morning at 8:00 AM IST
+- **🤖 AI-Powered Summaries**: Uses Google Gemini AI to create intelligent news summaries
+- **📧 Email Integration**: Sends formatted news directly to your email
+- **☁️ Cloud-Based**: Runs on GitHub Actions - no need to keep your computer on
+- **🆓 Completely Free**: Utilizes GitHub's free tier for automation
+- **⚙️ Configurable**: Easy to customize news sources and email preferences
+- **📱 Mobile Friendly**: Receive news summaries on any device
 
-## Quick Start
+## 🚀 Quick Start
 
-### 1. Installation
+### Prerequisites
 
-```bash
-# Clone or download the project
-cd "AI Agent"
+- GitHub account
+- Gmail account with App Password enabled
+- Google Gemini API key
 
-# Create virtual environment
-python -m venv venv
+### Setup Instructions
 
-# Activate virtual environment (Windows)
-venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### 2. Configuration
-
-1. **Copy environment file:**
+1. **Fork/Clone this repository**
    ```bash
-   copy .env.example .env
+   git clone https://github.com/yourusername/ai-news-agent.git
+   cd ai-news-agent
    ```
 
-2. **Get Gemini API Key:**
-   - Visit [Google AI Studio](https://makersuite.google.com/)
-   - Create a new API key
-   - Add it to your `.env` file
+2. **Get Required API Keys**
+   - **Gemini API**: Visit [Google AI Studio](https://makersuite.google.com/app/apikey) to get your free API key
+   - **Gmail App Password**: Enable 2FA on Gmail, then generate an app password
 
-3. **Configure Email:**
-   - For Gmail: Enable 2FA and create an [App Password](https://support.google.com/accounts/answer/185833)
-   - Add your email and app password to `.env`
+## ⚙️ Configuration
 
-4. **Update Recipients:**
-   - Edit `config/config.yaml`
-   - Update the recipients section with your email details
+### Environment Variables
 
-### 3. Test Setup
+Create a `.env` file for local development:
 
-```bash
-# Test the configuration
-python main.py
-```
-
-## Configuration
-
-### Main Configuration (`config/config.yaml`)
-
-```yaml
-# News Sources - Add or remove sources as needed
-news_sources:
-  - name: "AI News"
-    url: "https://www.artificialintelligence-news.com/"
-    enabled: true
-
-# Email Recipients
-email:
-  recipients:
-    - email: "your-email@example.com"
-      name: "Your Name"
-
-# Scheduling
-scheduling:
-  daily_time: "08:00"  # 24-hour format
-  timezone: "UTC"
-```
-
-### Environment Variables (`.env`)
-
-```bash
-GEMINI_API_KEY=your_gemini_api_key_here
+```env
+GEMINI_API_KEY=your_gemini_api_key
 EMAIL_USERNAME=your_email@gmail.com
-EMAIL_PASSWORD=your_app_password_here
+EMAIL_PASSWORD=your_app_password
 ```
 
-## Usage
+### Customization Options
 
-### Run Once (Manual)
-```bash
-python main.py
-```
+- **Schedule**: Modify the cron expression in `.github/workflows/daily-news-agent.yml`
+- **Email Template**: Customize the HTML template in `agents/email_agent.py`
+- **News Sources**: Add/modify news sources in `utils/news_scraper.py`
+- **AI Prompts**: Adjust summarization prompts in `utils/ai_summarizer.py`
 
-### Scheduled Execution
+## 🔧 Local Development
 
-#### Option 1: Windows Task Scheduler
-1. Open Task Scheduler
-2. Create Basic Task
-3. Set trigger for daily at your preferred time
-4. Set action to start your Python script
+1. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-#### Option 2: Python Scheduler (Keep Running)
-Modify `main.py` to use the scheduler:
+2. **Set Environment Variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your credentials
+   ```
 
-```python
-from src.scheduler.news_scheduler import NewsScheduler
+3. **Run Locally**
+   ```bash
+   python main.py
+   ```
 
-def main():
-    config = ConfigManager()
-    logger = setup_logging(config)
-    
-    orchestrator = NewsOrchestrator(config)
-    scheduler = NewsScheduler(config)
-    
-    # Schedule daily task
-    scheduler.schedule_daily_task(orchestrator.run_daily_process)
-    scheduler.start_scheduler()
-    
-    # Keep running
-    try:
-        while True:
-            time.sleep(60)
-    except KeyboardInterrupt:
-        scheduler.stop_scheduler()
-```
+## 🛠️ Technical Details
 
-## Project Structure
+### Technologies Used
 
-```
-AI Agent/
-├── src/
-│   ├── scrappers/          # Web scraping modules
-│   ├── summarizer/         # Gemini API integration
-│   ├── email/              # Email formatting and sending
-│   ├── scheduler/          # Task scheduling
-│   ├── config_manager.py   # Configuration management
-│   └── orchestrator.py     # Main coordination logic
-├── config/
-│   └── config.yaml         # Main configuration file
-├── logs/                   # Application logs
-├── main.py                 # Entry point
-└── requirements.txt        # Dependencies
-```
+- **Python 3.11+**: Core programming language
+- **Google Gemini AI**: Advanced language model for summarization
+- **GitHub Actions**: CI/CD and automation platform
+- **SMTP/Gmail**: Email delivery service
+- **BeautifulSoup4**: Web scraping library
+- **Requests**: HTTP library for API calls
 
-## Customization
+### Key Components
 
-### Adding New News Sources
+- **News Scraper**: Fetches latest news from multiple sources
+- **AI Summarizer**: Creates concise, relevant summaries using Gemini
+- **Email Agent**: Formats and sends professional-looking emails
+- **Config Manager**: Handles environment variables and settings
+- **Automation Workflow**: GitHub Actions for scheduled execution
 
-Edit `config/config.yaml`:
+## 📝 License
 
-```yaml
-news_sources:
-  - name: "Your News Source"
-    url: "https://example.com/ai-news"
-    enabled: true
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### Modifying Email Template
+## 📧 Contact
 
-Edit `src/email/email_formatter.py` to customize the HTML template.
+For questions or support, please open an issue on GitHub.
 
-### Changing Summarization Prompts
+---
 
-Edit `src/summarizer/gemini_summarizer.py` to modify the Gemini prompts.
+**Made with ❤️ and AI**
 
-## Troubleshooting
-
-### Common Issues
-
-1. **"Gemini API key not found"**
-   - Ensure your `.env` file has the correct API key
-   - Verify the key is valid at [Google AI Studio](https://makersuite.google.com/)
-
-2. **Email sending fails**
-   - For Gmail: Ensure you're using an App Password, not your regular password
-   - Check that 2FA is enabled on your Google account
-   - Verify SMTP settings in `config.yaml`
-
-3. **No articles found**
-   - Check if the news sources are accessible
-   - Verify your internet connection
-   - Look at logs in `logs/ai_news_agent.log`
-
-### Enable Debug Logging
-
-Edit `config/config.yaml`:
-
-```yaml
-logging:
-  level: "DEBUG"
-```
-
-## API Keys
-
-### Gemini API Key
-1. Go to [Google AI Studio](https://makersuite.google.com/)
-2. Sign in with your Google account
-3. Click "Get API Key"
-4. Create a new API key
-5. Copy and paste into your `.env` file
-
-### Email App Password (Gmail)
-1. Enable 2-factor authentication on your Google account
-2. Go to [App Passwords](https://myaccount.google.com/apppasswords)
-3. Generate a new app password for "Mail"
-4. Use this password in your `.env` file (not your regular Google password)
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Support
-
-For issues and questions:
-1. Check the logs in `logs/ai_news_agent.log`
-2. Verify your configuration files
-3. Test your API keys and email settings
-4. Create an issue with detailed error information
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
+*Never miss important news again! Get your daily dose of information delivered fresh to your inbox every morning.*
